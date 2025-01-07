@@ -1,35 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { vendorFormSchema, type VendorFormValues } from "@/lib/schemas/vendor-schema";
-import { GeneralInfoFields } from "@/components/vendor/GeneralInfoFields";
-import { ComplianceFields } from "@/components/vendor/ComplianceFields";
-import { RiskFields } from "@/components/vendor/RiskFields";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUser } from "@/contexts/UserContext";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { AccessDeniedAlert } from "@/components/vendor/AccessDeniedAlert";
+import { VendorFormTabs } from "@/components/vendor/VendorFormTabs";
+import { Form } from "@/components/ui/form";
 
 const AddVendor = () => {
   const { isAdmin } = useUser();
   const { toast } = useToast();
 
   if (!isAdmin) {
-    return (
-      <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tight">Add New Vendor</h1>
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Access Denied</AlertTitle>
-          <AlertDescription>
-            Please contact an administrator to add new vendors to the system.
-          </AlertDescription>
-        </Alert>
-      </div>
-    );
+    return <AccessDeniedAlert />;
   }
 
   const form = useForm<VendorFormValues>({
@@ -72,55 +55,10 @@ const AddVendor = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <Tabs defaultValue="general" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="general">General Information</TabsTrigger>
-              <TabsTrigger value="compliance">Compliance & Regulatory</TabsTrigger>
-              <TabsTrigger value="risk">Risk Assessment</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="general">
-              <Card>
-                <CardHeader>
-                  <CardTitle>General Information</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <GeneralInfoFields form={form} />
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="compliance">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Compliance & Regulatory Information</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ComplianceFields form={form} />
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="risk">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Risk Assessment</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <RiskFields form={form} />
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-
-          <div className="flex justify-end space-x-4">
-            <Button type="button" variant="outline" onClick={() => form.reset()}>
-              Reset
-            </Button>
-            <Button type="submit">
-              Add Vendor
-            </Button>
-          </div>
+          <VendorFormTabs 
+            form={form}
+            onReset={() => form.reset()}
+          />
         </form>
       </Form>
     </div>
