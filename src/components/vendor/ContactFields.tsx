@@ -18,12 +18,12 @@ export function ContactFields({ form }: ContactFieldsProps) {
     <>
       <FormField
         control={form.control}
-        name="country"
+        name="jurisdictionOfIncorporation"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Country</FormLabel>
+            <FormLabel>Jurisdiction of Incorporation</FormLabel>
             <FormControl>
-              <Input placeholder="Enter country" {...field} />
+              <Input placeholder="Enter jurisdiction" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -66,6 +66,20 @@ export function ContactFields({ form }: ContactFieldsProps) {
             <FormLabel>Contact Phone</FormLabel>
             <FormControl>
               <Input placeholder="Enter contact phone" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name="address"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Address</FormLabel>
+            <FormControl>
+              <Input placeholder="Enter address" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
