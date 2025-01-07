@@ -12,6 +12,7 @@ import { VendorMetricsCards } from "@/components/vendor/VendorMetricsCards";
 import { VendorTableHeader } from "@/components/vendor/VendorTableHeader";
 import { VendorTableRow } from "@/components/vendor/VendorTableRow";
 import { vendorTableColumns } from "@/components/vendor/VendorTableColumns";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Vendors = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -52,7 +53,7 @@ const Vendors = () => {
             onColumnToggle={handleColumnToggle}
           />
           
-          <div className="mt-4">
+          <ScrollArea className="mt-4 h-[600px] rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -73,7 +74,7 @@ const Vendors = () => {
                 ))}
               </TableBody>
             </Table>
-          </div>
+          </ScrollArea>
         </CardContent>
       </Card>
     </div>
