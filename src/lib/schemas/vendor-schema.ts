@@ -4,19 +4,15 @@ export const vendorFormSchema = z.object({
   // General Information
   name: z.string().min(2, "Name must be at least 2 characters"),
   vendorId: z.string().min(1, "Vendor ID is required"),
+  contactName: z.string().min(2, "Contact name is required"),
+  contactEmail: z.string().email("Invalid email address"),
+  contactPhone: z.string().min(10, "Phone number is required"),
+  address: z.string().optional(),
   parentCompany: z.string().optional(),
   legalStructure: z.enum(["Sole Proprietorship", "Partnership", "LLC", "Corporation", "Other"]),
   jurisdictionOfIncorporation: z.string().min(2, "Jurisdiction is required"),
   businessDescription: z.string().min(10, "Business description must be at least 10 characters"),
-  website: z.string().url("Invalid website URL"),
-  status: z.enum(["active", "inactive", "pending"]),
-  type: z.enum(["Technology", "Financial", "Consulting", "Infrastructure"]),
-  
-  // Contact Information
-  contactName: z.string().min(2, "Contact name is required"),
-  contactEmail: z.string().email("Invalid email address"),
-  contactPhone: z.string().min(10, "Phone number is required"),
-  country: z.string().min(2, "Country is required"),
+  website: z.string().url("Invalid website URL").optional(),
   
   // Regulatory & Compliance
   regulatoryLicenses: z.array(z.string()).optional(),
@@ -56,6 +52,10 @@ export const vendorFormSchema = z.object({
   incidentCount: z.number().min(0).optional(),
   satisfactionScore: z.number().min(1).max(5).optional(),
   hasImprovementPlan: z.boolean(),
+  
+  // Status
+  status: z.enum(["active", "inactive", "pending"]),
+  type: z.enum(["Technology", "Financial", "Consulting", "Infrastructure"]),
 });
 
 export type VendorFormValues = z.infer<typeof vendorFormSchema>;

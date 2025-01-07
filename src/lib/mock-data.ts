@@ -26,19 +26,15 @@ export const generateMockVendor = (): VendorFormValues => {
     // General Information
     name: faker.company.name(),
     vendorId: faker.string.alphanumeric(8).toUpperCase(),
+    contactName: faker.person.fullName(),
+    contactEmail: faker.internet.email(),
+    contactPhone: formatPhoneNumber(faker.phone.number()),
+    address: faker.location.streetAddress(),
     parentCompany: faker.company.name(),
     legalStructure: faker.helpers.arrayElement(["LLC", "Corporation", "Partnership", "Sole Proprietorship", "Other"]),
     jurisdictionOfIncorporation: faker.location.country(),
     businessDescription: faker.company.catchPhrase(),
     website: faker.internet.url(),
-    status: faker.helpers.arrayElement(["active", "inactive", "pending"]),
-    type: faker.helpers.arrayElement(["Technology", "Financial", "Consulting", "Infrastructure"]),
-    
-    // Contact Information
-    contactName: faker.person.fullName(),
-    contactEmail: faker.internet.email(),
-    contactPhone: formatPhoneNumber(faker.phone.number()),
-    country: faker.location.country(),
     
     // Regulatory & Compliance
     regulatoryLicenses: [faker.company.buzzPhrase()],
@@ -78,6 +74,10 @@ export const generateMockVendor = (): VendorFormValues => {
     incidentCount: faker.number.int({ min: 0, max: 10 }),
     satisfactionScore: faker.number.int({ min: 1, max: 5 }),
     hasImprovementPlan: faker.datatype.boolean(),
+    
+    // Status
+    status: faker.helpers.arrayElement(["active", "inactive", "pending"]),
+    type: faker.helpers.arrayElement(["Technology", "Financial", "Consulting", "Infrastructure"]),
   };
 };
 
