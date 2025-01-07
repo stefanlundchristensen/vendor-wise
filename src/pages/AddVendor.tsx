@@ -2,18 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import { vendorFormSchema, type VendorFormValues } from "@/lib/schemas/vendor-schema";
-import { useUser } from "@/contexts/UserContext";
-import { AccessDeniedAlert } from "@/components/vendor/AccessDeniedAlert";
 import { VendorFormTabs } from "@/components/vendor/VendorFormTabs";
 import { Form } from "@/components/ui/form";
 
 const AddVendor = () => {
-  const { isAdmin } = useUser();
   const { toast } = useToast();
-
-  if (!isAdmin) {
-    return <AccessDeniedAlert />;
-  }
 
   const form = useForm<VendorFormValues>({
     resolver: zodResolver(vendorFormSchema),
