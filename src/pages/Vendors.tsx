@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
-import { VendorMetricsCards } from "@/components/vendor/VendorMetricsCards";
 import { VendorTableHeader } from "@/components/vendor/VendorTableHeader";
 import { VendorTableRow } from "@/components/vendor/VendorTableRow";
 import { vendorTableColumns } from "@/components/vendor/VendorTableColumns";
@@ -33,7 +32,7 @@ const Vendors = () => {
   );
 
   return (
-    <div className="h-screen flex flex-col space-y-8 overflow-hidden p-8">
+    <div className="h-screen flex flex-col space-y-4 overflow-hidden p-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Vendors</h1>
         <p className="text-muted-foreground">
@@ -41,19 +40,17 @@ const Vendors = () => {
         </p>
       </div>
 
-      <VendorMetricsCards />
+      <VendorTableHeader
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        columns={vendorTableColumns}
+        visibleColumns={visibleColumns}
+        onColumnToggle={handleColumnToggle}
+      />
 
       <Card className="flex-1 min-h-0">
         <CardContent className="h-full flex flex-col pt-6">
-          <VendorTableHeader
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            columns={vendorTableColumns}
-            visibleColumns={visibleColumns}
-            onColumnToggle={handleColumnToggle}
-          />
-          
-          <div className="mt-4 flex-1 min-h-0">
+          <div className="flex-1 min-h-0">
             <ScrollArea className="h-full rounded-md border">
               <div className="overflow-x-auto">
                 <Table>
