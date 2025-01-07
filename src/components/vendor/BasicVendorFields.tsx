@@ -56,35 +56,11 @@ export function BasicVendorFields({ form }: BasicVendorFieldsProps) {
 
       <FormField
         control={form.control}
-        name="riskLevel"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Risk Level</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select risk level" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="critical">Critical</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
         name="type"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Vendor Type</FormLabel>
-            <Select onValueChange={field.onChange}>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder="Select vendor type" />

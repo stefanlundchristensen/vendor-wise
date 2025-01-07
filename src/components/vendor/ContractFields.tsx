@@ -26,7 +26,7 @@ export function ContractFields({ form }: ContractFieldsProps) {
               type="number" 
               placeholder="Enter contract value"
               {...field}
-              onChange={(e) => field.onChange(Number(e.target.value))}
+              onChange={(e) => field.onChange(e.target.valueAsNumber)}
             />
           </FormControl>
           <FormMessage />
