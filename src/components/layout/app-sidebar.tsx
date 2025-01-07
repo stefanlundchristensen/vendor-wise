@@ -1,5 +1,5 @@
-import { Building2, Home, Plus } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Building2, Home, LogOut, Plus } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -10,25 +10,32 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/components/ui/use-toast";
 
-/**
- * Navigation menu items configuration
- * Each item defines a route in the application with its icon and title
- */
 const menuItems = [
   { title: "Portfolio Snapshot", icon: Home, url: "/" },
   { title: "Vendors", icon: Building2, url: "/vendors" },
   { title: "Add New Vendor", icon: Plus, url: "/add-vendor" },
 ];
 
-/**
- * AppSidebar component provides the main navigation sidebar for the application.
- * It includes:
- * - Company branding
- * - Navigation menu with icons
- * - Links to main application routes
- */
 export function AppSidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+      toast({
+        title: "Error",
+        description: "Failed to log out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -46,6 +53,12 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              <SidebarMenuItem>
+                <SidebarMenuButton onClick={handleLogout} className="flex items-center gap-3">
+                  <LogOut className="h-4 w-4" />
+                  <span>Logout</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
