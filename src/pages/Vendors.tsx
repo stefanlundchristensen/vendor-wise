@@ -33,7 +33,7 @@ const Vendors = () => {
   );
 
   return (
-    <div className="space-y-8">
+    <div className="h-full flex flex-col space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Vendors</h1>
         <p className="text-muted-foreground">
@@ -43,8 +43,8 @@ const Vendors = () => {
 
       <VendorMetricsCards />
 
-      <Card>
-        <CardContent>
+      <Card className="flex-1">
+        <CardContent className="h-full flex flex-col pt-6">
           <VendorTableHeader
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
@@ -53,8 +53,8 @@ const Vendors = () => {
             onColumnToggle={handleColumnToggle}
           />
           
-          <div className="mt-4">
-            <ScrollArea className="h-[600px] rounded-md border">
+          <div className="mt-4 flex-1 min-h-0">
+            <ScrollArea className="h-full rounded-md border">
               <Table>
                 <TableHeader>
                   <TableRow>
