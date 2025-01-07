@@ -1,22 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { type VendorFormValues } from "./schemas/vendor-schema";
 
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount);
-};
-
-const formatPhoneNumber = (phone: string) => {
-  const cleaned = phone.replace(/\D/g, '');
-  const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-  if (match) {
-    return '(' + match[1] + ') ' + match[2] + '-' + match[3];
-  }
-  return phone;
-};
-
 export const generateMockVendor = (): VendorFormValues => {
   const contractValue = Number(faker.finance.amount({ min: 10000, max: 1000000, dec: 0 }));
   const startDate = faker.date.past();
@@ -28,19 +12,19 @@ export const generateMockVendor = (): VendorFormValues => {
     vendorId: faker.string.alphanumeric(8).toUpperCase(),
     contactName: faker.person.fullName(),
     contactEmail: faker.internet.email(),
-    contactPhone: formatPhoneNumber(faker.phone.number()),
+    contactPhone: faker.phone.number(),
     address: faker.location.streetAddress(),
     parentCompany: faker.company.name(),
-    legalStructure: faker.helpers.arrayElement(["LLC", "Corporation", "Partnership", "Sole Proprietorship", "Other"]),
+    legalStructure: faker.helpers.arrayElement(["LLC", "Corporation", "Partnership", "Sole Proprietorship"]),
     jurisdictionOfIncorporation: faker.location.country(),
     businessDescription: faker.company.catchPhrase(),
     website: faker.internet.url(),
     
     // Regulatory & Compliance
-    regulatoryLicenses: [faker.company.buzzPhrase()],
-    complianceCertifications: ['ISO 27001', 'SOC 2', 'PCI DSS'],
+    regulatoryLicenses: Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, () => faker.company.buzzPhrase()),
+    complianceCertifications: faker.helpers.arrayElements(['ISO 27001', 'SOC 2', 'PCI DSS', 'HIPAA', 'GDPR'], faker.number.int({ min: 1, max: 3 })),
     dataProcessingAgreement: faker.datatype.boolean(),
-    subProcessors: [faker.company.name(), faker.company.name()],
+    subProcessors: Array.from({ length: faker.number.int({ min: 1, max: 4 }) }, () => faker.company.name()),
     dataResidency: faker.location.country(),
     doraCompliance: faker.datatype.boolean(),
     outsourcingClassification: faker.helpers.arrayElement(["Critical", "Non-Critical"]),
@@ -56,7 +40,7 @@ export const generateMockVendor = (): VendorFormValues => {
     contractStartDate: startDate.toISOString(),
     contractEndDate: endDate.toISOString(),
     contractValue: contractValue,
-    billingFrequency: faker.helpers.arrayElement(["Monthly", "Quarterly", "Annually", "Other"]),
+    billingFrequency: faker.helpers.arrayElement(["Monthly", "Quarterly", "Annually"]),
     onboardingStatus: faker.helpers.arrayElement(["Not Started", "In Progress", "Completed"]),
     offboardingProcedure: faker.datatype.boolean(),
     
@@ -81,4 +65,5 @@ export const generateMockVendor = (): VendorFormValues => {
   };
 };
 
-export const mockVendors = Array.from({ length: 5 }, generateMockVendor);
+// Generate 10 mock vendors instead of just 5 to have more test data
+export const mockVendors = Array.from({ length: 10 }, generateMockVendor);
