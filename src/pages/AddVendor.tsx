@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { mockVendors } from "@/lib/mock-data";
 import { vendorFormSchema, type VendorFormValues } from "@/lib/schemas/vendor-schema";
 import { GeneralInfoFields } from "@/components/vendor/GeneralInfoFields";
 import { ComplianceFields } from "@/components/vendor/ComplianceFields";
@@ -17,13 +16,18 @@ const AddVendor = () => {
   const form = useForm<VendorFormValues>({
     resolver: zodResolver(vendorFormSchema),
     defaultValues: {
-      riskLevel: "low",
-      outsourcingClassification: "Non-Critical",
+      status: "pending",
+      type: "Technology",
       dataProcessingAgreement: false,
       doraCompliance: false,
+      outsourcingClassification: "Non-Critical",
       hasBCDRPlan: false,
       hasIncidentResponsePlan: false,
       dataPrivacyCompliance: false,
+      riskLevel: "low",
+      financialStability: "Unknown",
+      cybersecurityRating: "Unknown",
+      contractValue: 0,
     },
   });
 
