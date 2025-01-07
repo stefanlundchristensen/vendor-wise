@@ -1,6 +1,6 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Globe, Mail, Phone, FileText, Shield, Activity } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { VendorFormValues } from "@/lib/schemas/vendor-schema";
 
 interface VendorTableRowProps {
@@ -9,23 +9,8 @@ interface VendorTableRowProps {
 }
 
 export function VendorTableRow({ vendor, visibleColumns }: VendorTableRowProps) {
-  const getRiskBadgeColor = (risk: string) => {
-    switch (risk.toLowerCase()) {
-      case "low": return "bg-green-500";
-      case "medium": return "bg-yellow-500";
-      case "high": return "bg-orange-500";
-      case "critical": return "bg-red-500";
-      default: return "bg-gray-500";
-    }
-  };
-
-  const getStatusBadgeColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "active": return "bg-green-500";
-      case "inactive": return "bg-gray-500";
-      case "pending": return "bg-yellow-500";
-      default: return "bg-gray-500";
-    }
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString();
   };
 
   const formatCurrency = (amount: number) => {
@@ -35,123 +20,84 @@ export function VendorTableRow({ vendor, visibleColumns }: VendorTableRowProps) 
     }).format(amount);
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
+  const renderBoolean = (value: boolean) => {
+    return value ? <Check className="h-4 w-4 text-green-500" /> : <X className="h-4 w-4 text-red-500" />;
+  };
+
+  const renderCell = (columnId: string) => {
+    switch (columnId) {
+      // General Information
+      case "name": return <div className="font-medium">{vendor.name}</div>;
+      case "vendorId": return vendor.vendorId;
+      case "contactName": return vendor.contactName;
+      case "contactEmail": return <a href={`mailto:${vendor.contactEmail}`} className="text-blue-500 hover:underline">{vendor.contactEmail}</a>;
+      case "contactPhone": return vendor.contactPhone;
+      case "address": return vendor.address;
+      case "parentCompany": return vendor.parentCompany || "N/A";
+      case "legalStructure": return vendor.legalStructure;
+      case "jurisdictionOfIncorporation": return vendor.jurisdictionOfIncorporation;
+      case "businessDescription": return <div className="max-w-xs truncate">{vendor.businessDescription}</div>;
+      case "website": return <a href={vendor.website} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">{vendor.website}</a>;
+      
+      // Regulatory & Compliance
+      case "regulatoryLicenses": return vendor.regulatoryLicenses?.join(", ") || "None";
+      case "complianceCertifications": return vendor.complianceCertifications?.join(", ") || "None";
+      case "dataProcessingAgreement": return renderBoolean(vendor.dataProcessingAgreement);
+      case "subProcessors": return vendor.subProcessors?.join(", ") || "None";
+      case "dataResidency": return vendor.dataResidency;
+      case "doraCompliance": return renderBoolean(vendor.doraCompliance);
+      case "outsourcingClassification": return vendor.outsourcingClassification;
+      case "hasBCDRPlan": return renderBoolean(vendor.hasBCDRPlan);
+      case "hasIncidentResponsePlan": return renderBoolean(vendor.hasIncidentResponsePlan);
+      case "hasInfoSecPolicies": return renderBoolean(vendor.hasInfoSecPolicies);
+      case "lastAuditDate": return vendor.lastAuditDate ? formatDate(vendor.lastAuditDate) : "N/A";
+      
+      // Operational
+      case "servicesProvided": return <div className="max-w-xs truncate">{vendor.servicesProvided}</div>;
+      case "slaDetails": return <div className="max-w-xs truncate">{vendor.slaDetails}</div>;
+      case "kpiFramework": return <div className="max-w-xs truncate">{vendor.kpiFramework}</div>;
+      case "contractStartDate": return formatDate(vendor.contractStartDate);
+      case "contractEndDate": return formatDate(vendor.contractEndDate);
+      case "contractValue": return formatCurrency(vendor.contractValue);
+      case "billingFrequency": return vendor.billingFrequency;
+      case "onboardingStatus": return vendor.onboardingStatus;
+      case "offboardingProcedure": return renderBoolean(vendor.offboardingProcedure);
+      
+      // Risk
+      case "riskLevel": return (
+        <Badge className={
+          vendor.riskLevel === "low" ? "bg-green-500" :
+          vendor.riskLevel === "medium" ? "bg-yellow-500" :
+          vendor.riskLevel === "high" ? "bg-orange-500" :
+          "bg-red-500"
+        }>
+          {vendor.riskLevel.toUpperCase()}
+        </Badge>
+      );
+      case "riskMitigationPlan": return <div className="max-w-xs truncate">{vendor.riskMitigationPlan}</div>;
+      case "financialStability": return vendor.financialStability;
+      case "insuranceCoverage": return renderBoolean(vendor.insuranceCoverage);
+      case "cybersecurityRating": return vendor.cybersecurityRating;
+      case "dataPrivacyCompliance": return renderBoolean(vendor.dataPrivacyCompliance);
+      case "reputationScore": return vendor.reputationScore;
+      
+      // Performance
+      case "lastPerformanceReview": return vendor.lastPerformanceReview ? formatDate(vendor.lastPerformanceReview) : "N/A";
+      case "incidentCount": return vendor.incidentCount?.toString() || "0";
+      case "satisfactionScore": return vendor.satisfactionScore ? `${vendor.satisfactionScore}/5` : "N/A";
+      case "hasImprovementPlan": return renderBoolean(vendor.hasImprovementPlan);
+      
+      default: return "N/A";
+    }
   };
 
   return (
     <TableRow>
-      {visibleColumns.includes("generalInfo") && (
-        <TableCell>
-          <div className="space-y-1">
-            <div className="font-medium">{vendor.name}</div>
-            <div className="text-sm text-muted-foreground">ID: {vendor.vendorId}</div>
-            <Badge className={getStatusBadgeColor(vendor.status)}>{vendor.status}</Badge>
-            <div className="text-sm">{vendor.type}</div>
-          </div>
+      {visibleColumns.map((columnId) => (
+        <TableCell key={columnId}>
+          {renderCell(columnId)}
         </TableCell>
-      )}
-
-      {visibleColumns.includes("contact") && (
-        <TableCell>
-          <div className="space-y-1">
-            <div>{vendor.contactName}</div>
-            <a href={`mailto:${vendor.contactEmail}`} className="flex items-center text-sm text-blue-500 hover:underline">
-              <Mail className="mr-1 h-3 w-3" />
-              {vendor.contactEmail}
-            </a>
-            <div className="flex items-center text-sm text-gray-500">
-              <Phone className="mr-1 h-3 w-3" />
-              {vendor.contactPhone}
-            </div>
-            {vendor.website && (
-              <a href={vendor.website} target="_blank" rel="noopener noreferrer" 
-                 className="flex items-center text-sm text-blue-500 hover:underline">
-                <Globe className="mr-1 h-3 w-3" />
-                Website
-              </a>
-            )}
-          </div>
-        </TableCell>
-      )}
-
-      {visibleColumns.includes("legal") && (
-        <TableCell>
-          <div className="space-y-1">
-            <div className="text-sm">Structure: {vendor.legalStructure}</div>
-            <div className="text-sm">Jurisdiction: {vendor.jurisdictionOfIncorporation}</div>
-            {vendor.parentCompany && (
-              <div className="text-sm">Parent: {vendor.parentCompany}</div>
-            )}
-          </div>
-        </TableCell>
-      )}
-
-      {visibleColumns.includes("compliance") && (
-        <TableCell>
-          <div className="space-y-1">
-            <Badge variant={vendor.doraCompliance ? "default" : "destructive"}>
-              DORA: {vendor.doraCompliance ? "Compliant" : "Non-Compliant"}
-            </Badge>
-            <div className="text-sm">
-              Classification: {vendor.outsourcingClassification}
-            </div>
-            <div className="text-sm">
-              Data Residency: {vendor.dataResidency}
-            </div>
-          </div>
-        </TableCell>
-      )}
-
-      {visibleColumns.includes("risk") && (
-        <TableCell>
-          <div className="space-y-1">
-            <Badge className={getRiskBadgeColor(vendor.riskLevel)}>
-              {vendor.riskLevel.toUpperCase()}
-            </Badge>
-            <div className="text-sm">
-              Financial: {vendor.financialStability}
-            </div>
-            <div className="text-sm">
-              Cyber: {vendor.cybersecurityRating}
-            </div>
-          </div>
-        </TableCell>
-      )}
-
-      {visibleColumns.includes("contract") && (
-        <TableCell>
-          <div className="space-y-1">
-            <div className="font-medium">
-              {formatCurrency(vendor.contractValue)}
-            </div>
-            <div className="text-sm">
-              Start: {formatDate(vendor.contractStartDate)}
-            </div>
-            <div className="text-sm">
-              End: {formatDate(vendor.contractEndDate)}
-            </div>
-          </div>
-        </TableCell>
-      )}
-
-      {visibleColumns.includes("performance") && (
-        <TableCell>
-          <div className="space-y-1">
-            <div className="text-sm">
-              Satisfaction: {vendor.satisfactionScore}/5
-            </div>
-            <div className="text-sm">
-              Incidents: {vendor.incidentCount}
-            </div>
-            <Badge variant={vendor.hasImprovementPlan ? "outline" : "secondary"}>
-              {vendor.hasImprovementPlan ? "Has Improvement Plan" : "No Improvement Plan"}
-            </Badge>
-          </div>
-        </TableCell>
-      )}
-
-      {/* Add more column conditions based on visibleColumns */}
+      ))}
     </TableRow>
   );
 }
