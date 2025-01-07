@@ -23,7 +23,6 @@ const AddVendor = () => {
       doraCompliance: false,
       hasBCDRPlan: false,
       hasIncidentResponsePlan: false,
-      hasInfoSecPolicies: false,
       dataPrivacyCompliance: false,
       performanceReviewFrequency: "Quarterly",
     },
