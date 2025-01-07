@@ -26,7 +26,7 @@ export const generateMockVendor = (): Vendor => ({
   country: faker.location.country(),
   contactName: faker.person.fullName(),
   contactEmail: faker.internet.email(),
-  contractValue: Number(faker.finance.amount(10000, 1000000, 2)),
+  contractValue: Number(faker.finance.amount({ min: 10000, max: 1000000, dec: 2 })),
   contractStart: faker.date.past(),
   contractEnd: faker.date.future(),
   complianceScore: faker.number.int({ min: 60, max: 100 }),
