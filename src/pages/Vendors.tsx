@@ -39,6 +39,14 @@ const getStatusBadgeColor = (status: string) => {
   }
 };
 
+// Format currency helper
+const formatCurrency = (amount: number) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(amount);
+};
+
 const Vendors = () => {
   return (
     <div className="space-y-8">
@@ -92,7 +100,19 @@ const Vendors = () => {
             <TableBody>
               {mockVendors.map((vendor) => (
                 <TableRow key={vendor.vendorId}>
-                  <TableCell className="font-medium">{vendor.name}</TableCell>
+                  <TableCell className="font-medium">
+                    {vendor.name}
+                    {vendor.website && (
+                      <a 
+                        href={vendor.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-sm text-blue-500 hover:underline"
+                      >
+                        {vendor.website}
+                      </a>
+                    )}
+                  </TableCell>
                   <TableCell>{vendor.type}</TableCell>
                   <TableCell>
                     <Badge className={getStatusBadgeColor(vendor.status || "")}>
@@ -104,9 +124,20 @@ const Vendors = () => {
                       {vendor.riskLevel}
                     </Badge>
                   </TableCell>
-                  <TableCell>{vendor.contactName}</TableCell>
                   <TableCell>
-                    ${vendor.contractValue?.toLocaleString()}
+                    <div>{vendor.contactName}</div>
+                    <a 
+                      href={`mailto:${vendor.contactEmail}`}
+                      className="text-sm text-blue-500 hover:underline"
+                    >
+                      {vendor.contactEmail}
+                    </a>
+                    <div className="text-sm text-gray-500">
+                      {vendor.contactPhone}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {formatCurrency(vendor.contractValue || 0)}
                   </TableCell>
                 </TableRow>
               ))}
