@@ -33,7 +33,7 @@ const Vendors = () => {
   );
 
   return (
-    <div className="h-full flex flex-col space-y-8">
+    <div className="h-screen flex flex-col space-y-8 overflow-hidden p-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Vendors</h1>
         <p className="text-muted-foreground">
@@ -43,7 +43,7 @@ const Vendors = () => {
 
       <VendorMetricsCards />
 
-      <Card className="flex-1">
+      <Card className="flex-1 min-h-0">
         <CardContent className="h-full flex flex-col pt-6">
           <VendorTableHeader
             searchTerm={searchTerm}
