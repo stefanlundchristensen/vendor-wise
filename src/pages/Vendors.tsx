@@ -44,37 +44,41 @@ const Vendors = () => {
       <VendorMetricsCards />
 
       <Card>
-        <CardContent className="pt-6">
-          <VendorTableHeader
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            columns={vendorTableColumns}
-            visibleColumns={visibleColumns}
-            onColumnToggle={handleColumnToggle}
-          />
-          
-          <ScrollArea className="mt-4 h-[600px] rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  {vendorTableColumns.map((column) => (
-                    visibleColumns.includes(column.id) && (
-                      <TableHead key={column.id}>{column.label}</TableHead>
-                    )
+        <CardContent>
+          <div className="space-y-4">
+            <div className="pt-6">
+              <VendorTableHeader
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                columns={vendorTableColumns}
+                visibleColumns={visibleColumns}
+                onColumnToggle={handleColumnToggle}
+              />
+            </div>
+            
+            <ScrollArea className="h-[600px] rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    {vendorTableColumns.map((column) => (
+                      visibleColumns.includes(column.id) && (
+                        <TableHead key={column.id}>{column.label}</TableHead>
+                      )
+                    ))}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredVendors.map((vendor) => (
+                    <VendorTableRow
+                      key={vendor.vendorId}
+                      vendor={vendor}
+                      visibleColumns={visibleColumns}
+                    />
                   ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredVendors.map((vendor) => (
-                  <VendorTableRow
-                    key={vendor.vendorId}
-                    vendor={vendor}
-                    visibleColumns={visibleColumns}
-                  />
-                ))}
-              </TableBody>
-            </Table>
-          </ScrollArea>
+                </TableBody>
+              </Table>
+            </ScrollArea>
+          </div>
         </CardContent>
       </Card>
     </div>
