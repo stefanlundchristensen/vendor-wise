@@ -11,9 +11,17 @@ import { UseFormReturn } from "react-hook-form";
 import { VendorFormValues } from "@/lib/schemas/vendor-schema";
 
 interface BasicVendorFieldsProps {
+  /** Form instance from react-hook-form */
   form: UseFormReturn<VendorFormValues>;
 }
 
+/**
+ * BasicVendorFields component renders the basic information fields for a vendor.
+ * This includes:
+ * - Vendor name
+ * - Status selection
+ * - Vendor type selection
+ */
 export function BasicVendorFields({ form }: BasicVendorFieldsProps) {
   return (
     <>

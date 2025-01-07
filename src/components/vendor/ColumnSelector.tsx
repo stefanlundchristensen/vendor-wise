@@ -9,16 +9,28 @@ import {
 import { Settings2 } from "lucide-react";
 
 interface Column {
+  /** Unique identifier for the column */
   id: string;
+  /** Display label for the column */
   label: string;
 }
 
 interface ColumnSelectorProps {
+  /** Array of available columns */
   columns: Column[];
+  /** Array of currently visible column IDs */
   visibleColumns: string[];
+  /** Callback function to toggle column visibility */
   onColumnToggle: (columnId: string) => void;
 }
 
+/**
+ * ColumnSelector component provides a dropdown menu for users to select which columns
+ * they want to display in the vendor table. Features include:
+ * - Select/Deselect all columns
+ * - Individual column toggles
+ * - Persistent column visibility state
+ */
 export function ColumnSelector({ columns, visibleColumns, onColumnToggle }: ColumnSelectorProps) {
   const handleSelectAll = () => {
     columns.forEach(column => {
