@@ -17,7 +17,7 @@ export function VendorTableHeader({
   onColumnToggle,
 }: VendorTableHeaderProps) {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col space-y-4">
       <div className="text-lg font-semibold">Vendor List</div>
       <div className="flex space-x-2">
         <Input
