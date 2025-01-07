@@ -41,7 +41,7 @@ export function ComplianceSelect({
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select onValueChange={field.onChange} defaultValue={field.value as string}>
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder={placeholder} />
