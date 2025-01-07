@@ -1,49 +1,32 @@
 import { faker } from "@faker-js/faker";
+import { type VendorFormValues } from "./schemas/vendor-schema";
 
-export type Vendor = {
-  id: string;
-  name: string;
-  status: "active" | "inactive" | "pending";
-  riskLevel: "low" | "medium" | "high" | "critical";
-  type: string;
-  country: string;
-  contactName: string;
-  contactEmail: string;
-  contractValue: number;
-  contractStart: Date;
-  contractEnd: Date;
-  complianceScore: number;
-  services: string[];
-  lastAssessment: Date;
-};
-
-export const generateMockVendor = (): Vendor => ({
-  id: faker.string.uuid(),
+export const generateMockVendor = (): VendorFormValues => ({
   name: faker.company.name(),
+  vendorId: faker.string.alphanumeric(8).toUpperCase(),
   status: faker.helpers.arrayElement(["active", "inactive", "pending"]),
-  riskLevel: faker.helpers.arrayElement(["low", "medium", "high", "critical"]),
   type: faker.helpers.arrayElement(["Technology", "Financial", "Consulting", "Infrastructure"]),
-  country: faker.location.country(),
+  parentCompany: faker.company.name(),
+  legalStructure: faker.helpers.arrayElement(["LLC", "Corporation", "Partnership", "Sole Proprietorship", "Other"]),
+  jurisdictionOfIncorporation: faker.location.country(),
+  website: faker.internet.url(),
+  description: faker.company.catchPhrase(),
   contactName: faker.person.fullName(),
   contactEmail: faker.internet.email(),
-  contractValue: Number(faker.finance.amount({ min: 10000, max: 1000000, dec: 2 })),
-  contractStart: faker.date.past(),
-  contractEnd: faker.date.future(),
-  complianceScore: faker.number.int({ min: 60, max: 100 }),
-  services: Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, () =>
-    faker.helpers.arrayElement([
-      "Cloud Services",
-      "Data Processing",
-      "Security",
-      "Consulting",
-      "Support",
-      "Infrastructure",
-    ])
-  ),
-  lastAssessment: faker.date.recent(),
+  contactPhone: faker.phone.number(),
+  address: faker.location.streetAddress(),
+  city: faker.location.city(),
+  country: faker.location.country(),
+  riskLevel: faker.helpers.arrayElement(["low", "medium", "high", "critical"]),
+  outsourcingClassification: faker.helpers.arrayElement(["Critical", "Important", "Non-Critical"]),
+  dataProcessingAgreement: faker.datatype.boolean(),
+  doraCompliance: faker.datatype.boolean(),
+  hasBCDRPlan: faker.datatype.boolean(),
+  hasIncidentResponsePlan: faker.datatype.boolean(),
+  dataPrivacyCompliance: faker.datatype.boolean(),
+  financialStability: faker.helpers.arrayElement(["Strong", "Moderate", "Weak", "Unknown"]),
+  cybersecurityRating: faker.helpers.arrayElement(["Excellent", "Good", "Fair", "Poor", "Unknown"]),
+  contractValue: Number(faker.finance.amount({ min: 10000, max: 1000000, dec: 0 })),
 });
 
-export const generateMockVendors = (count: number): Vendor[] =>
-  Array.from({ length: count }, generateMockVendor);
-
-export const mockVendors = generateMockVendors(50);
+export const mockVendors = Array.from({ length: 5 }, generateMockVendor);
