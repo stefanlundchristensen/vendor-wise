@@ -45,17 +45,15 @@ const Vendors = () => {
 
       <Card>
         <CardContent>
-          <div className="space-y-4">
-            <div className="pt-6">
-              <VendorTableHeader
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                columns={vendorTableColumns}
-                visibleColumns={visibleColumns}
-                onColumnToggle={handleColumnToggle}
-              />
-            </div>
-            
+          <VendorTableHeader
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            columns={vendorTableColumns}
+            visibleColumns={visibleColumns}
+            onColumnToggle={handleColumnToggle}
+          />
+          
+          <div className="mt-4">
             <ScrollArea className="h-[600px] rounded-md border">
               <Table>
                 <TableHeader>
