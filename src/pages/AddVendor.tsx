@@ -3,11 +3,13 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { mockVendors, type Vendor } from "@/lib/mock-data";
+import { mockVendors } from "@/lib/mock-data";
 import { vendorFormSchema, type VendorFormValues } from "@/lib/schemas/vendor-schema";
-import { BasicVendorFields } from "@/components/vendor/BasicVendorFields";
-import { ContactFields } from "@/components/vendor/ContactFields";
-import { ContractFields } from "@/components/vendor/ContractFields";
+import { GeneralInfoFields } from "@/components/vendor/GeneralInfoFields";
+import { ComplianceFields } from "@/components/vendor/ComplianceFields";
+import { RiskFields } from "@/components/vendor/RiskFields";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const AddVendor = () => {
   const { toast } = useToast();
@@ -15,32 +17,20 @@ const AddVendor = () => {
   const form = useForm<VendorFormValues>({
     resolver: zodResolver(vendorFormSchema),
     defaultValues: {
-      status: "pending",
       riskLevel: "low",
-      services: [],
+      outsourcingClassification: "Non-Critical",
+      dataProcessingAgreement: false,
+      doraCompliance: false,
+      hasBCDRPlan: false,
+      hasIncidentResponsePlan: false,
+      hasInfoSecPolicies: false,
+      dataPrivacyCompliance: false,
+      performanceReviewFrequency: "Quarterly",
     },
   });
 
   const onSubmit = (data: VendorFormValues) => {
     console.log("Form submitted:", data);
-    const newVendor: Vendor = {
-      id: crypto.randomUUID(),
-      contractStart: new Date(),
-      contractEnd: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-      complianceScore: 100,
-      lastAssessment: new Date(),
-      services: data.services || [],
-      name: data.name,
-      status: data.status,
-      riskLevel: data.riskLevel,
-      type: data.type,
-      country: data.country,
-      contactName: data.contactName,
-      contactEmail: data.contactEmail,
-      contractValue: data.contractValue,
-    };
-    
-    mockVendors.push(newVendor);
     
     toast({
       title: "Vendor Added",
@@ -54,20 +44,62 @@ const AddVendor = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Add New Vendor</h1>
-        <p className="text-muted-foreground">Enter the vendor details below.</p>
+        <p className="text-muted-foreground">
+          Enter vendor details using the form below. All fields marked with * are required.
+        </p>
       </div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid gap-6 md:grid-cols-2">
-            <BasicVendorFields form={form} />
-            <ContactFields form={form} />
-            <ContractFields form={form} />
-          </div>
+          <Tabs defaultValue="general" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="general">General Information</TabsTrigger>
+              <TabsTrigger value="compliance">Compliance & Regulatory</TabsTrigger>
+              <TabsTrigger value="risk">Risk Assessment</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="general">
+              <Card>
+                <CardHeader>
+                  <CardTitle>General Information</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <GeneralInfoFields form={form} />
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="compliance">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Compliance & Regulatory Information</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ComplianceFields form={form} />
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="risk">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Risk Assessment</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <RiskFields form={form} />
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
 
-          <Button type="submit" className="w-full md:w-auto">
-            Add Vendor
-          </Button>
+          <div className="flex justify-end space-x-4">
+            <Button type="button" variant="outline" onClick={() => form.reset()}>
+              Reset
+            </Button>
+            <Button type="submit">
+              Add Vendor
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
