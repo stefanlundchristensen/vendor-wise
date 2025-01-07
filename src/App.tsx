@@ -9,8 +9,20 @@ import Index from "./pages/Index";
 import AddVendor from "./pages/AddVendor";
 import Vendors from "./pages/Vendors";
 
+/**
+ * QueryClient instance for managing API requests and caching
+ */
 const queryClient = new QueryClient();
 
+/**
+ * Root application component that sets up the main providers and routing structure.
+ * Includes:
+ * - React Query for data fetching
+ * - Toast notifications
+ * - Tooltips
+ * - Routing
+ * - Sidebar navigation
+ */
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>

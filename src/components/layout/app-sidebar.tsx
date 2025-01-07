@@ -11,12 +11,23 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
+/**
+ * Navigation menu items configuration
+ * Each item defines a route in the application with its icon and title
+ */
 const menuItems = [
   { title: "Portfolio Snapshot", icon: Home, url: "/" },
   { title: "Vendors", icon: Building2, url: "/vendors" },
   { title: "Add New Vendor", icon: Plus, url: "/add-vendor" },
 ];
 
+/**
+ * AppSidebar component provides the main navigation sidebar for the application.
+ * It includes:
+ * - Company branding
+ * - Navigation menu with icons
+ * - Links to main application routes
+ */
 export function AppSidebar() {
   return (
     <Sidebar>

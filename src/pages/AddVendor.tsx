@@ -1,10 +1,18 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
 import { vendorFormSchema, type VendorFormValues } from "@/lib/schemas/vendor-schema";
 import { VendorFormTabs } from "@/components/vendor/VendorFormTabs";
 import { Form } from "@/components/ui/form";
 
+/**
+ * AddVendor page component provides a form interface for adding new vendors to the system.
+ * Features:
+ * - Form validation using Zod schema
+ * - Multi-tab form layout for organized data entry
+ * - Toast notifications for form submission feedback
+ * - Comprehensive vendor information capture
+ */
 const AddVendor = () => {
   const { toast } = useToast();
 
