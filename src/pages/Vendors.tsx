@@ -52,9 +52,9 @@ const Vendors = () => {
         <CardContent className="h-full flex flex-col pt-6">
           <div className="flex-1 min-h-0">
             <ScrollArea className="h-full rounded-md border">
-              <div className="overflow-x-auto">
+              <div className="relative overflow-x-auto">
                 <Table>
-                  <TableHeader>
+                  <TableHeader className="sticky top-0 bg-background z-10">
                     <TableRow>
                       {vendorTableColumns.map((column) => (
                         visibleColumns.includes(column.id) && (
