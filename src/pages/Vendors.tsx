@@ -55,26 +55,30 @@ const Vendors = () => {
           
           <div className="mt-4 flex-1 min-h-0">
             <ScrollArea className="h-full rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    {vendorTableColumns.map((column) => (
-                      visibleColumns.includes(column.id) && (
-                        <TableHead key={column.id}>{column.label}</TableHead>
-                      )
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      {vendorTableColumns.map((column) => (
+                        visibleColumns.includes(column.id) && (
+                          <TableHead key={column.id} className="whitespace-nowrap">
+                            {column.label}
+                          </TableHead>
+                        )
+                      ))}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredVendors.map((vendor) => (
+                      <VendorTableRow
+                        key={vendor.vendorId}
+                        vendor={vendor}
+                        visibleColumns={visibleColumns}
+                      />
                     ))}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredVendors.map((vendor) => (
-                    <VendorTableRow
-                      key={vendor.vendorId}
-                      vendor={vendor}
-                      visibleColumns={visibleColumns}
-                    />
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableBody>
+                </Table>
+              </div>
             </ScrollArea>
           </div>
         </CardContent>
