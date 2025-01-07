@@ -24,7 +24,6 @@ const AddVendor = () => {
       hasBCDRPlan: false,
       hasIncidentResponsePlan: false,
       dataPrivacyCompliance: false,
-      performanceReviewFrequency: "Quarterly",
     },
   });
 
