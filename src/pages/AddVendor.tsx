@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
-import { mockVendors } from "@/lib/mock-data";
+import { useToast } from "@/hooks/use-toast";
+import { mockVendors, type Vendor } from "@/lib/mock-data";
 
 const vendorFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -24,7 +24,7 @@ const vendorFormSchema = z.object({
   contactName: z.string().min(2, "Contact name must be at least 2 characters"),
   contactEmail: z.string().email("Invalid email address"),
   contractValue: z.number().min(0, "Contract value must be positive"),
-  services: z.string().array().min(1, "At least one service is required"),
+  services: z.array(z.string()).min(1, "At least one service is required"),
 });
 
 type VendorFormValues = z.infer<typeof vendorFormSchema>;
@@ -43,13 +43,14 @@ const AddVendor = () => {
 
   const onSubmit = (data: VendorFormValues) => {
     console.log("Form submitted:", data);
-    const newVendor = {
+    const newVendor: Vendor = {
       ...data,
       id: crypto.randomUUID(),
       contractStart: new Date(),
       contractEnd: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year from now
       complianceScore: 100,
       lastAssessment: new Date(),
+      services: data.services,
     };
     
     mockVendors.push(newVendor);
