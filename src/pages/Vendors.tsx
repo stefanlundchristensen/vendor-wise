@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Building2, AlertTriangle } from "lucide-react";
+import { Building2, AlertTriangle, Mail, Phone, Globe } from "lucide-react";
 
 const getRiskBadgeColor = (risk: string) => {
   switch (risk.toLowerCase()) {
@@ -39,12 +39,15 @@ const getStatusBadgeColor = (status: string) => {
   }
 };
 
-// Format currency helper
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
   }).format(amount);
+};
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString();
 };
 
 const Vendors = () => {
@@ -89,55 +92,97 @@ const Vendors = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Risk Level</TableHead>
+                <TableHead>General Info</TableHead>
                 <TableHead>Contact</TableHead>
-                <TableHead>Contract Value</TableHead>
+                <TableHead>Compliance</TableHead>
+                <TableHead>Risk Profile</TableHead>
+                <TableHead>Contract Details</TableHead>
+                <TableHead>Performance</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {mockVendors.map((vendor) => (
                 <TableRow key={vendor.vendorId}>
-                  <TableCell className="font-medium">
-                    {vendor.name}
-                    {vendor.website && (
-                      <a 
-                        href={vendor.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block text-sm text-blue-500 hover:underline"
-                      >
-                        {vendor.website}
-                      </a>
-                    )}
-                  </TableCell>
-                  <TableCell>{vendor.type}</TableCell>
                   <TableCell>
-                    <Badge className={getStatusBadgeColor(vendor.status || "")}>
-                      {vendor.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge className={getRiskBadgeColor(vendor.riskLevel || "")}>
-                      {vendor.riskLevel}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div>{vendor.contactName}</div>
-                    <a 
-                      href={`mailto:${vendor.contactEmail}`}
-                      className="text-sm text-blue-500 hover:underline"
-                    >
-                      {vendor.contactEmail}
-                    </a>
-                    <div className="text-sm text-gray-500">
-                      {vendor.contactPhone}
+                    <div className="space-y-1">
+                      <div className="font-medium">{vendor.name}</div>
+                      <div className="text-sm text-muted-foreground">ID: {vendor.vendorId}</div>
+                      <Badge className={getStatusBadgeColor(vendor.status)}>{vendor.status}</Badge>
+                      <div className="text-sm">{vendor.type}</div>
+                      {vendor.website && (
+                        <a
+                          href={vendor.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-sm text-blue-500 hover:underline"
+                        >
+                          <Globe className="mr-1 h-3 w-3" />
+                          Website
+                        </a>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>
-                    {formatCurrency(vendor.contractValue || 0)}
+                    <div className="space-y-1">
+                      <div>{vendor.contactName}</div>
+                      <a
+                        href={`mailto:${vendor.contactEmail}`}
+                        className="flex items-center text-sm text-blue-500 hover:underline"
+                      >
+                        <Mail className="mr-1 h-3 w-3" />
+                        {vendor.contactEmail}
+                      </a>
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Phone className="mr-1 h-3 w-3" />
+                        {vendor.contactPhone}
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <Badge variant={vendor.doraCompliance ? "default" : "destructive"}>
+                        DORA: {vendor.doraCompliance ? "Compliant" : "Non-Compliant"}
+                      </Badge>
+                      <div className="text-sm">
+                        Classification: {vendor.outsourcingClassification}
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <Badge className={getRiskBadgeColor(vendor.riskLevel)}>
+                        {vendor.riskLevel.toUpperCase()}
+                      </Badge>
+                      <div className="text-sm">
+                        Financial: {vendor.financialStability}
+                      </div>
+                      <div className="text-sm">
+                        Cyber: {vendor.cybersecurityRating}
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <div className="font-medium">
+                        {formatCurrency(vendor.contractValue)}
+                      </div>
+                      <div className="text-sm">
+                        Start: {formatDate(vendor.contractStartDate)}
+                      </div>
+                      <div className="text-sm">
+                        End: {formatDate(vendor.contractEndDate)}
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <div className="text-sm">
+                        Satisfaction: {vendor.satisfactionScore}/5
+                      </div>
+                      <div className="text-sm">
+                        Incidents: {vendor.incidentCount}
+                      </div>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
