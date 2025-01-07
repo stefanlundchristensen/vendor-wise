@@ -24,15 +24,15 @@ const AddVendor = () => {
   const onSubmit = (data: VendorFormValues) => {
     console.log("Form submitted:", data);
     const newVendor: Vendor = {
-      ...data,
       id: crypto.randomUUID(),
       contractStart: new Date(),
-      contractEnd: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year from now
+      contractEnd: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
       complianceScore: 100,
       lastAssessment: new Date(),
-      services: data.services,
+      services: data.services || [],
       name: data.name,
       status: data.status,
+      riskLevel: data.riskLevel,
       type: data.type,
       country: data.country,
       contactName: data.contactName,
