@@ -24,30 +24,24 @@ const App = () => (
           <SidebarProvider>
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <div className="min-h-screen flex w-full">
-                      <AppSidebar />
-                      <main className="flex-1 p-8">
-                        <Routes>
-                          <Route index element={<Index />} />
-                          <Route path="vendors" element={<Vendors />} />
-                          <Route
-                            path="add-vendor"
-                            element={
-                              <ProtectedRoute requireAdmin>
-                                <AddVendor />
-                              </ProtectedRoute>
-                            }
-                          />
-                        </Routes>
-                      </main>
-                    </div>
-                  </ProtectedRoute>
-                }
-              />
+              <Route element={
+                <ProtectedRoute>
+                  <div className="min-h-screen flex w-full">
+                    <AppSidebar />
+                    <main className="flex-1 p-8">
+                      <Routes>
+                        <Route index element={<Index />} />
+                        <Route path="vendors" element={<Vendors />} />
+                        <Route path="add-vendor" element={
+                          <ProtectedRoute requireAdmin>
+                            <AddVendor />
+                          </ProtectedRoute>
+                        } />
+                      </Routes>
+                    </main>
+                  </div>
+                </ProtectedRoute>
+              } path="/*" />
             </Routes>
           </SidebarProvider>
         </BrowserRouter>
