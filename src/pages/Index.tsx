@@ -6,8 +6,22 @@ const Index = () => {
   const totalVendors = mockVendors.length;
   const activeVendors = mockVendors.filter((v) => v.status === "active").length;
   const highRiskVendors = mockVendors.filter((v) => v.riskLevel === "high" || v.riskLevel === "critical").length;
+  
+  // Calculate compliance score based on compliance-related boolean fields
+  const calculateComplianceScore = (vendor: typeof mockVendors[0]) => {
+    const complianceFields = [
+      vendor.dataProcessingAgreement,
+      vendor.doraCompliance,
+      vendor.hasBCDRPlan,
+      vendor.hasIncidentResponsePlan,
+      vendor.dataPrivacyCompliance,
+    ];
+    const trueCount = complianceFields.filter(Boolean).length;
+    return Math.round((trueCount / complianceFields.length) * 100);
+  };
+
   const avgComplianceScore = Math.round(
-    mockVendors.reduce((acc, v) => acc + v.complianceScore, 0) / totalVendors
+    mockVendors.reduce((acc, vendor) => acc + calculateComplianceScore(vendor), 0) / totalVendors
   );
 
   return (

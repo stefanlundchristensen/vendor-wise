@@ -18,14 +18,14 @@ export const generateMockVendor = (): VendorFormValues => ({
   city: faker.location.city(),
   country: faker.location.country(),
   riskLevel: faker.helpers.arrayElement(["low", "medium", "high", "critical"]),
-  outsourcingClassification: faker.helpers.arrayElement(["Critical", "Important", "Non-Critical"]),
+  outsourcingClassification: faker.helpers.arrayElement(["Critical", "Non-Critical"]),
   dataProcessingAgreement: faker.datatype.boolean(),
   doraCompliance: faker.datatype.boolean(),
   hasBCDRPlan: faker.datatype.boolean(),
   hasIncidentResponsePlan: faker.datatype.boolean(),
   dataPrivacyCompliance: faker.datatype.boolean(),
   financialStability: faker.helpers.arrayElement(["Strong", "Moderate", "Weak", "Unknown"]),
-  cybersecurityRating: faker.helpers.arrayElement(["Excellent", "Good", "Fair", "Poor", "Unknown"]),
+  cybersecurityRating: faker.helpers.arrayElement(["Strong", "Moderate", "Weak", "Unknown"]),
   contractValue: Number(faker.finance.amount({ min: 10000, max: 1000000, dec: 0 })),
 });
 
